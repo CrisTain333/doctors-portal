@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import navlogo from "../../assets/30697801_9-removebg-preview.png";
+import AuthContext from "../../Context/Context";
 const Navbar = () => {
+  const { user, singoutUser } = useContext(AuthContext);
   const [theme, setTheme] = useState(null);
 
   useEffect(() => {
-    if(window.matchMedia('(prefers-color-scheme: dark)').matches){
-      setTheme('dark');
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
     }
-    else {
-      setTheme('light');
-    }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (theme === "dark") {
@@ -34,17 +35,24 @@ const Navbar = () => {
         <Link to="/appointment">Appointment</Link>
       </li>
       <li>
-        <Link to="/about">About</Link>
-      </li>
-      <li>
         <Link to="/reviews">Reviews</Link>
       </li>
-      <li>
-        <Link to="/login">Login</Link>
-      </li>
+      {user ? (
+        <li>
+          <button onClick={singoutUser}>Sing Out</button>
+        </li>
+      ) : (
+        <>
+          {" "}
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+        </>
+      )}
+
       <li className="mr-3">
-        <label className="swap swap-rotate" >
-          <input type="checkbox" onClick={handleThemeSwitch}/>
+        <label className="swap swap-rotate">
+          <input type="checkbox" onClick={handleThemeSwitch} />
 
           <svg
             className="swap-on fill-current w-7 h-7"
@@ -63,12 +71,6 @@ const Navbar = () => {
           </svg>
         </label>
       </li>
-
-      <img
-        alt=""
-        className="w-12 h-12 ring rounded-full dark:bg-gray-500 ring-primary"
-        src="https://source.unsplash.com/40x40/?portrait?4"
-      />
     </React.Fragment>
   );
 

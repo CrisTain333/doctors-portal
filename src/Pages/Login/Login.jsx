@@ -2,8 +2,12 @@ import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from '../../assets/30697801_9-removebg-preview.png'
 import googleLogo from '../../assets/google.png'
+import AuthContext from "../../Context/Context";
 
 const Login = () => {
+const {loginUser} = useContext(AuthContext);
+
+
   const [error, setError] = useState("");
   let navigate = useNavigate();
   let location = useLocation();
@@ -14,6 +18,19 @@ const Login = () => {
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
+
+    loginUser(email,password)
+    .then(result =>{
+      const user = result.user
+      console.log(user)
+      navigate(from, { replace: true });
+    })
+    .catch(err =>{
+      const errorMessage = err.message;
+      setError(errorMessage);
+    });
+
+
 
     // fetch('http://localhost:5000/jwt',{
     //   method:'POST',

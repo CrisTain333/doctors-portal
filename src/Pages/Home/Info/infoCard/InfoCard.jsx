@@ -1,9 +1,13 @@
 import React from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // You can also use <link> for styles
+// ..
+AOS.init();
 
 const InfoCard = ({card}) => {
     const { name, description, icon, bgClass } = card;
     return (
-        <div className={`card text-white p-6 md:card-side shadow-xl ${bgClass}  `}>
+        <div className={`card text-white p-6 md:card-side shadow-xl ${bgClass}  `} data-aos="flip-up" data-aos-duration="2000">
             <figure>
                 <img src={icon} alt="Movie" />
             </figure>

@@ -1,9 +1,11 @@
 import React from 'react';
-
+import AOS from 'aos';
+import 'aos/dist/aos.css'; 
+AOS.init();
 const Review = ({ review }) => {
     const { name, img, review: userReview, location } = review;
     return (
-        <div className="card  shadow-lg dark:shadow-primary mt-9">
+        <div className="card  shadow-lg dark:shadow-primary mt-9" data-aos="zoom-out" data-aos-duration="1000">
             <div className="card-body">
                 <p>{userReview}</p>
                 <div className="flex items-center mt-6">
