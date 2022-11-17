@@ -5,7 +5,7 @@ import googleLogo from "../../assets/google.png";
 import AuthContext from "../../Context/Context";
 
 const SingUp = () => {
-  const { createUser, updateUser } = useContext(AuthContext);
+  const { createUser, updateUser , googleLogin } = useContext(AuthContext);
   const [error, setError] = useState("");
 
   let navigate = useNavigate();
@@ -36,34 +36,16 @@ const SingUp = () => {
       });
   };
 
-  //   const handleGoogleLogin = () => {
-  //     googleLogin()
-  //     .then(result =>{const user = result.user;
-  //       const currentUser = {
-  //         email: user.email,
-  //       };
-
-  //       fetch("https://picoritamy-server.vercel.app/jwt",{
-  //         method: "POST",
-  //         headers: {
-  //           "content-type": "application/json",
-  //         },
-  //         body: JSON.stringify(currentUser),
-  //       })
-  //         .then((res) => res.json())
-  //         .then((data) => {
-  //           localStorage.setItem("token", data);
-  //           navigate(from, { replace: true });
-  //         });
-
-  //     })
-  //     .catch(err=>{
-  //         const errorMessaage = err.message;
-  //         setError(errorMessaage);
-
-  //     })
-  //   };
-
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        navigate(from, { replace: true });
+      })
+      .catch((err) => {
+        const errorMessaage = err.message;
+        setError(errorMessaage);
+      });
+  };
   return (
     <div>
       <div className="max-w-xl mx-auto mb-6  dark:bg-gray-900 dark:text-gray-100">
@@ -131,7 +113,7 @@ const SingUp = () => {
             <div className="flex justify-center space-x-4">
               <button
                 aria-label="Log in with Google"
-                // onClick={handleGoogleLogin}
+                onClick={handleGoogleLogin}
                 className="p-3 rounded-sm"
               >
                 <img src={googleLogo} className="w-8 h-8" alt="" />

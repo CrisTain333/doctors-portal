@@ -1,0 +1,21 @@
+.left{
+    flex: 2;
+}
+.right{
+    margin-left: 30px;
+    flex: 10;
+}
+.dashLayout{
+    display: flex;
+    width: 95%;
+    margin: 0px auto;
+}
+ 
+@media screen and (max-width:668px) {
+    .dashLayout{
+        display: block;
+        width: 98%;
+        margin: 0px auto;
+    }
+    
+}

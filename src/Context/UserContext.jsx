@@ -7,10 +7,14 @@ import {
   updateProfile,
   onAuthStateChanged,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+  sendPasswordResetEmail
 } from "firebase/auth";
 import app from "../Firebase/Firebase.init";
 
 const auth = getAuth(app);
+const provider  =  new GoogleAuthProvider();
 const UserContext = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState("");
@@ -32,6 +36,7 @@ const UserContext = ({ children }) => {
       .catch((error) => {});
   };
   const singoutUser = () => {
+    localStorage.clear()
     setLoading(true);
     return signOut(auth);
   };
@@ -45,10 +50,18 @@ const UserContext = ({ children }) => {
       unSubscribe();
     };
   }, []);
+  const googleLogin =()=>{
+    setLoading(true);
+    return signInWithPopup(auth,provider)
+
+  }
+  const resetPassword  = (email)=>{
+    return sendPasswordResetEmail(auth,email);
+  }
 
   return (
     <AuthContext.Provider
-      value={{ loading, user, loginUser, createUser, updateUser, singoutUser }}
+      value={{ loading, user, loginUser, createUser, updateUser, singoutUser , googleLogin , resetPassword }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,12 +1,11 @@
 import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from '../../assets/30697801_9-removebg-preview.png'
-import googleLogo from '../../assets/google.png'
+import logo from "../../assets/30697801_9-removebg-preview.png";
+import googleLogo from "../../assets/google.png";
 import AuthContext from "../../Context/Context";
 
 const Login = () => {
-const {loginUser} = useContext(AuthContext);
-
+  const { loginUser, googleLogin } = useContext(AuthContext);
 
   const [error, setError] = useState("");
   let navigate = useNavigate();
@@ -19,59 +18,43 @@ const {loginUser} = useContext(AuthContext);
     const email = form.email.value;
     const password = form.password.value;
 
-    loginUser(email,password)
-    .then(result =>{
-      const user = result.user
-      console.log(user)
-      navigate(from, { replace: true });
-    })
-    .catch(err =>{
-      const errorMessage = err.message;
-      setError(errorMessage);
-    });
+    loginUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        const currentUser = {
+          email: user.email,
+        };
+        fetch("http://localhost:5000/jwt",{
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(currentUser),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            localStorage.setItem("token", data);
+            navigate(from, { replace: true });
+          });
+      })
+      .catch((err) => {
+        const errorMessage = err.message;
+        setError(errorMessage);
+      });
 
-
-
-    // fetch('http://localhost:5000/jwt',{
-    //   method:'POST',
-    //   headers:{
-    //     'Content-type':'application/json'
-    //   },
-    //   body:JSON.stringify({email})
-    // })
-    // .then(res=>res.json())
-    // .then(data=> {
-    //   localStorage.setItem('authToken',data);
-    // })
-   
+    
   };
 
-//   const handleGoogleLogin = () => {
-//     googleLogin()
-//       .then((result) => {
-//         const user = result.user;
-//         const currentUser = {
-//           email: user.email,
-//         };
-
-//         fetch("https://picoritamy-server.vercel.app/jwt", {
-//           method: "POST",
-//           headers: {
-//             "content-type": "application/json",
-//           },
-//           body: JSON.stringify(currentUser),
-//         })
-//           .then((res) => res.json())
-//           .then((data) => {
-//             localStorage.setItem("token", data);
-//             navigate(from, { replace: true });
-//           });
-//       })
-//       .catch((err) => {
-//         const errorMessaage = err.message;
-//         setError(errorMessaage);
-//       });
-//   };
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        navigate(from, { replace: true });
+      })
+      .catch((err) => {
+        const errorMessaage = err.message;
+        setError(errorMessaage);
+      });
+  };
 
   return (
     <div>
@@ -79,7 +62,7 @@ const {loginUser} = useContext(AuthContext);
         <div className="flex items-center ">
           <div className="w-full  rounded shadow-lg dark:shadow-primary p-8 m-4 md:max-w-sm md:mx-auto">
             <span className="flex justify-center items-center  w-full text-xl uppercase font-bold mb-4 text-center">
-            <img src={logo} alt="brandImage" className="w-8 mr-2" />
+              <img src={logo} alt="brandImage" className="w-8 mr-2" />
               Login
             </span>
             <form className="mb-4" onSubmit={handleSubmit}>
@@ -115,6 +98,9 @@ const {loginUser} = useContext(AuthContext);
                 value="Login"
               />
             </form>
+            <Link to='/passwordreset'>
+            <p className="text-primary underline ">Forgot Password ? </p>
+            </Link>
 
             <p className="text-red-600">{error}</p>
 
@@ -128,10 +114,10 @@ const {loginUser} = useContext(AuthContext);
             <div className="flex justify-center space-x-4">
               <button
                 aria-label="Log in with Google"
-                // onClick={handleGoogleLogin}
+                onClick={handleGoogleLogin}
                 className="p-3 rounded-sm"
               >
-                <img src={googleLogo} className='w-8 h-8' alt="" />
+                <img src={googleLogo} className="w-8 h-8" alt="" />
               </button>
             </div>
             <p className="text-xs text-center sm:px-6 py-2 dark:text-gray-400">

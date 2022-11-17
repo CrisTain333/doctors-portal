@@ -1,6 +1,7 @@
 import React, { Children, useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import AuthContext from "../Context/Context";
+import { Dna } from "react-loader-spinner";
 
 const PrivateRoute = ({ children }) => {
   let location = useLocation();
@@ -9,7 +10,16 @@ const PrivateRoute = ({ children }) => {
   if (loading) {
     return (
       <>
-        <p>Loading</p>
+        <div className="flex  justify-center items-center">
+        <Dna
+  visible={true}
+  height="200"
+  width="200"
+  ariaLabel="dna-loading"
+  wrapperStyle={{}}
+  wrapperClass="dna-wrapper"
+/>
+        </div>
       </>
     );
   }

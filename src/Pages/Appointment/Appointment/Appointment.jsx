@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AppointmentBanner from '../AppointmentBanner/AppointmentBanner';
 import AppointmentBooking from '../AppointmentBooking/AppointmentBooking';
 const Appointment = () => {
+    // window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
     const [selectedDate, setSelctedDate] = useState(new Date());
     return (
         <div>

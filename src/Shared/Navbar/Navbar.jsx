@@ -35,7 +35,7 @@ const Navbar = () => {
         <Link to="/appointment">Appointment</Link>
       </li>
       <li>
-        <Link to="/reviews">Reviews</Link>
+        <Link to="/dashboard">Dashboard</Link>
       </li>
       {user ? (
         <li>
@@ -55,7 +55,7 @@ const Navbar = () => {
           <input type="checkbox" onClick={handleThemeSwitch} />
 
           <svg
-            className="swap-on fill-current w-7 h-7"
+            className="swap-on fill-current w-7 h-7 "
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
           >
@@ -63,7 +63,7 @@ const Navbar = () => {
           </svg>
 
           <svg
-            className="swap-off fill-current w-7 h-7"
+            className="swap-off fill-current w-7 h-7 "
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
           >
@@ -112,6 +112,22 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal p-0">{menuItems}</ul>
       </div>
+      <label tabIndex={1} className="btn btn-ghost lg:hidden"  htmlFor="my-drawer-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h8m-8 6h16"
+              />
+            </svg>
+          </label>
     </div>
   );
 };
