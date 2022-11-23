@@ -61,7 +61,7 @@ const UserContext = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ loading, user, loginUser, createUser, updateUser, singoutUser , googleLogin , resetPassword }}
+      value={{ loading, user, loginUser, createUser, updateUser, singoutUser , googleLogin , resetPassword , setLoading }}
     >
       {children}
     </AuthContext.Provider>

@@ -19,27 +19,27 @@ const AppointmentBooking = ({ selectedDate }) => {
     queryKey: ["appointmentOptions", date],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/appointmentOptions?date=${date}`
+        `https://doctor-portal-server-three.vercel.app/appointmentOptions?date=${date}`
       );
       const data = await res.json();
       return data;
     },
   });
 
-  if (isLoading) {
-    return (
-      <div className="flex  justify-center items-center">
-        <Dna
-          visible={true}
-          height="200"
-          width="200"
-          ariaLabel="dna-loading"
-          wrapperStyle={{}}
-          wrapperClass="dna-wrapper"
-        />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex  justify-center items-center">
+  //       <Dna
+  //         visible={true}
+  //         height="200"
+  //         width="200"
+  //         ariaLabel="dna-loading"
+  //         wrapperStyle={{}}
+  //         wrapperClass="dna-wrapper"
+  //       />
+  //     </div>
+  //   );
+  // }
 
   return (
     <section className="my-14">
@@ -48,7 +48,7 @@ const AppointmentBooking = ({ selectedDate }) => {
         Available Appointments on {format(selectedDate, "PP")}
       </p>
       <div className="grid gap-x-9 gap-y-9 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-10">
-        {appointmentOptions.map((option) => {
+        {appointmentOptions?.map((option) => {
           return (
             <AppoinmentCard
               key={option._id}

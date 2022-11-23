@@ -10,7 +10,7 @@ const AppoinmentModel = ({
   refetch,
 }) => {
   console.log(treatment);
-  const { name, slots } = treatment;
+  const { name, slots , price } = treatment;
   const treatmentName = name;
   const { user } = useContext(AuthContext);
   const date = format(selectedDate, "PP");
@@ -30,8 +30,9 @@ const AppoinmentModel = ({
       slot,
       email,
       phone,
+      price
     };
-    fetch("http://localhost:5000/bookings", {
+    fetch("https://doctor-portal-server-three.vercel.app/bookings", {
       method: "POST",
       headers: {
         "Content-type": "application/json",

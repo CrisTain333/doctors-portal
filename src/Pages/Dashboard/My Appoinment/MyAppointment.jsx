@@ -1,18 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext } from "react";
-import Row from "../Row";
+import React, { useContext, useEffect, useState } from "react";
 import { Dna } from "react-loader-spinner";
+import { Link } from "react-router-dom";
 import AuthContext from "../../../Context/Context";
 
 const MyAppointment = () => {
-  const { user} = useContext(AuthContext);
-  const email = user?.email;
-  let count = 1;
+  const { user } = useContext(AuthContext);
 
-  const { data: bookings = [], } = useQuery({
-    queryKey: ["bookings", email],
+  const { data: bookings = [], isLoading } = useQuery({
+    queryKey: ["bookings", user?.email],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/bookings?email=${email}`, {
+      const res = await fetch(`https://doctor-portal-server-three.vercel.app/bookings?email=${user?.email}`, {
         headers: {
           authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -21,6 +19,8 @@ const MyAppointment = () => {
       return data;
     },
   });
+
+ 
 
   return (
     <div>
@@ -33,12 +33,51 @@ const MyAppointment = () => {
               <th className="dark:bg-gray-800 dark:text-gray-100">Service</th>
               <th className="dark:bg-gray-800 dark:text-gray-100">Time</th>
               <th className="dark:bg-gray-800 dark:text-gray-100">Date</th>
+              <th className="dark:bg-gray-800 dark:text-gray-100">Price</th>
+              <th className="dark:bg-gray-800 dark:text-gray-100">Payment</th>
             </tr>
           </thead>
           <tbody className="dark:bg-gray-900 dark:text-gray-100">
-            {bookings?.map((e) => {
-              return <Row key={count + 1} count={count++} data={e} />;
-            })}
+          
+            {bookings &&
+              bookings?.map((e, i) => (
+                <tr key={i + 1}>
+                  <th className="dark:bg-gray-800 dark:text-gray-100">
+                    {i + 1}
+                  </th>
+                  <td className="dark:bg-gray-800 dark:text-gray-100">
+                    {e?.patient}
+                  </td>
+                  <td className="dark:bg-gray-800 dark:text-gray-100">
+                    {e?.treatmentName}
+                  </td>
+                  <td className="dark:bg-gray-800 dark:text-gray-100">
+                    {e?.slot}
+                  </td>
+                  <td className="dark:bg-gray-800 dark:text-gray-100">
+                    {e?.appointmentDate}
+                  </td>
+                  <td className="dark:bg-gray-800 dark:text-gray-100">
+                    ${e?.price}
+                  </td>
+                  <td className="dark:bg-gray-800 dark:text-gray-100">
+                    {e.price && !e.paid && (
+                      <>
+                        <Link to={`/dashboard/payment/${e._id}`}>
+                          <button className="btn bg-red-500 text-white btn-sm">
+                            Pay
+                          </button>
+                        </Link>
+                      </>
+                    )}
+                    {e.price && e.paid && (
+                      <span className="text-white btn btn-sm  bg-green-500 ">
+                        Paid
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

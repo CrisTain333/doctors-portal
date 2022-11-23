@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/30697801_9-removebg-preview.png";
 import googleLogo from "../../assets/google.png";
@@ -11,6 +12,9 @@ const SingUp = () => {
   let navigate = useNavigate();
   let location = useLocation();
   let from = location.state?.from?.pathname || "/";
+
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -27,8 +31,39 @@ const SingUp = () => {
     }
     createUser(email, password)
       .then((result) => {
+        const user = result.user
         updateUser(name);
-        navigate(from, { replace: true });
+        const currentUser = {
+          email: user.email,
+        };
+        const userInformation = {
+          name,
+          email : user.email
+        } 
+        console.log(userInformation)
+        fetch('https://doctor-portal-server-three.vercel.app/users',{
+          method:'POST',
+          headers:{
+            'Content-type':'application/json'
+          },
+          body:JSON.stringify(userInformation)
+        })
+        .then(res=>res.json())
+        .then(data => {
+          fetch("https://doctor-portal-server-three.vercel.app/jwt",{
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(currentUser),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            localStorage.setItem("token", data);
+            navigate(from, { replace: true });
+          });
+        })
+
       })
       .catch((err) => {
         const errorMessaage = err.message;
@@ -130,7 +165,7 @@ const SingUp = () => {
               </Link>
             </p>
           </div>
-          {/* <Toaster position="top-center" reverseOrder={false} /> */}
+          <Toaster position="top-center" reverseOrder={false} />
         </div>
       </div>
     </div>

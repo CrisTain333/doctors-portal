@@ -24,7 +24,7 @@ const Login = () => {
         const currentUser = {
           email: user.email,
         };
-        fetch("http://localhost:5000/jwt",{
+        fetch("https://doctor-portal-server-three.vercel.app/jwt",{
           method: "POST",
           headers: {
             "content-type": "application/json",
