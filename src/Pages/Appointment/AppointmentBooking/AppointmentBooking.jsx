@@ -26,20 +26,7 @@ const AppointmentBooking = ({ selectedDate }) => {
     },
   });
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="flex  justify-center items-center">
-  //       <Dna
-  //         visible={true}
-  //         height="200"
-  //         width="200"
-  //         ariaLabel="dna-loading"
-  //         wrapperStyle={{}}
-  //         wrapperClass="dna-wrapper"
-  //       />
-  //     </div>
-  //   );
-  // }
+
 
   return (
     <section className="my-14">

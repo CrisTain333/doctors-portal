@@ -20,6 +20,10 @@ const Users = () => {
     },
   });
 
+
+
+
+
   const handleMakeAdmin = (id) => {
     fetch(`https://doctor-portal-server-three.vercel.app/users/admin/${id}`, {
       method: "PUT",

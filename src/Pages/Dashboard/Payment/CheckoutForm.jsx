@@ -14,14 +14,17 @@ const CheckoutForm = ({ data }) => {
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
-    fetch("https://doctor-portal-server-three.vercel.app/create-payment-intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({ price }),
-    })
+    fetch(
+      "https://doctor-portal-server-three.vercel.app/create-payment-intent",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ price }),
+      }
+    )
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
   }, [price]);
@@ -52,6 +55,8 @@ const CheckoutForm = ({ data }) => {
       setErrorMessage("");
     }
     setProcessing(true);
+
+    
     const { paymentIntent, error: confirmError } =
       await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
@@ -86,7 +91,7 @@ const CheckoutForm = ({ data }) => {
         .then((data) => {
           console.log(data);
           if (data.insertedId) {
-            toast.success('Congrats! your payment completed')
+            toast.success("Congrats! your payment completed");
             setSuccess("Congrats! your payment completed");
             setTransactionId(paymentIntent.id);
           }
@@ -97,8 +102,9 @@ const CheckoutForm = ({ data }) => {
 
   return (
     <div>
-    <Toaster></Toaster>
+      <Toaster></Toaster>
       <form onSubmit={handleSubmit}>
+        
         <CardElement
           options={{
             style: {
@@ -121,18 +127,22 @@ const CheckoutForm = ({ data }) => {
           <button
             type="submit"
             className="btn btn-primary bg-gradient-to-r from-primary to-secondary text-white w-32  mt-10"
-            disabled={!stripe ||processing}
+            disabled={!stripe || processing}
           >
-            {processing?<ThreeDots
-height="50" 
-width="50" 
-radius="9"
-color="#ff006e" 
-ariaLabel="three-dots-loading"
-wrapperStyle={{}}
-wrapperClassName=""
-visible={true}
- />: 'Pay'}
+            {processing ? (
+              <ThreeDots
+                height="50"
+                width="50"
+                radius="9"
+                color="#ff006e"
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{}}
+                wrapperClassName=""
+                visible={true}
+              />
+            ) : (
+              "Pay"
+            )}
           </button>
         </div>
       </form>
